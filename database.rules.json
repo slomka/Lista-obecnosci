@@ -1,0 +1,12 @@
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null",
+
+    "profiles": {
+      "$uid": {
+        ".write": "auth != null && ($uid === auth.uid || root.child('profiles').child(auth.uid).child('role').val() === 'admin')"
+      }
+    }
+  }
+}
