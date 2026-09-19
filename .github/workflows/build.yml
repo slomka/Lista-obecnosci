@@ -16,7 +16,7 @@ jobs:
 
       - name: Build APK with official kivy/buildozer Docker image
         run: |
-          yes | docker run --rm -i \
+          yes | docker run --rm -i -t \
             -v ${{ github.workspace }}:/home/user/hostcwd \
             kivy/buildozer android debug
 
