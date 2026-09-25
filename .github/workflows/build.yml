@@ -14,9 +14,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Show available memory before build
-        run: free -h
-
       - name: Build APK with official kivy/buildozer Docker image
         run: |
           yes | docker run --rm -i \
@@ -24,16 +21,6 @@ jobs:
             -e PYTHONUNBUFFERED=1 \
             -v ${{ github.workspace }}:/home/user/hostcwd \
             kivy/buildozer android debug
-
-      - name: Check for OOM kills (runs even if build failed)
-        if: always()
-        run: |
-          echo "----- dmesg (last 100 lines) -----"
-          sudo dmesg | tail -100 || echo "dmesg unavailable"
-          echo "----- journalctl oom search -----"
-          sudo journalctl -k | grep -i "killed process" || echo "no OOM entries found in journalctl"
-          echo "----- free -h after build -----"
-          free -h
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
